@@ -1,0 +1,28 @@
+CREATE DATABASE AttendanceDB;
+USE AttendanceDB;
+
+CREATE TABLE Students (
+    Sid INT PRIMARY KEY,
+    Name VARCHAR(50)
+);
+
+CREATE TABLE Attendance (
+    Sid INT,
+    Date DATE,
+    Present CHAR(1),
+    FOREIGN KEY (Sid) REFERENCES Students(Sid)
+);
+
+INSERT INTO Students VALUES (1, 'Ravi'), (2, 'Priya');
+INSERT INTO Attendance VALUES
+(1, '2025-11-01', 'Y'),
+(1, '2025-11-02', 'N'),
+(1, '2025-11-03', 'Y'),
+(2, '2025-11-01', 'Y'),
+(2, '2025-11-02', 'Y');
+
+SELECT s.Name,
+       ROUND(AVG(CASE WHEN a.Present='Y' THEN 1 ELSE 0 END)*100,2) AS AttendancePercent
+FROM Students s
+JOIN Attendance a ON s.Sid = a.Sid
+GROUP BY s.Name;
