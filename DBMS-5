@@ -1,0 +1,42 @@
+DROP DATABASE IF EXISTS SalesDB;
+CREATE DATABASE SalesDB;
+USE SalesDB;
+
+CREATE TABLE Customers(
+    CustID INT PRIMARY KEY,
+    CustName VARCHAR(50) NOT NULL
+);
+CREATE TABLE Orders(
+    OrderID INT PRIMARY KEY,
+    CustID INT,
+    OrderDate DATE,
+    FOREIGN KEY (CustID) REFERENCES Customers(CustID)
+);
+CREATE TABLE OrderItems(
+    OrderID INT,
+    Product VARCHAR(50),
+    Qty INT,
+    Price DECIMAL(10,2),
+    PRIMARY KEY (OrderID, Product),
+    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID)
+);
+
+INSERT INTO Customers VALUES (1,'Asha'),(2,'Bala');
+INSERT INTO Orders VALUES
+(101,1,'2025-10-01'),
+(102,1,'2025-10-02'),
+(103,2,'2025-10-03');
+INSERT INTO OrderItems VALUES
+(101,'Pen',10,5.00),(101,'Book',2,120.00),
+(102,'Pencil',20,2.00),
+(103,'Notebook',5,50.00);
+
+-- Per order totals
+SELECT o.OrderID, c.CustName,
+       SUM(oi.Qty * oi.Price) AS OrderTotal
+FROM Orders o
+JOIN Customers c ON c.CustID = o.CustID
+JOIN OrderItems oi ON oi.OrderID = o.OrderID
+GROUP BY o.OrderID, c.CustName
+HAVING OrderTotal >= 100
+ORDER BY OrderTotal DESC;
