@@ -1,0 +1,24 @@
+DROP DATABASE IF EXISTS CollegeDB2;
+CREATE DATABASE CollegeDB2;
+USE CollegeDB2;
+
+CREATE TABLE Department(
+    DeptID INT PRIMARY KEY,
+    DeptName VARCHAR(30) UNIQUE NOT NULL
+);
+CREATE TABLE Student(
+    RollNo INT PRIMARY KEY,
+    Name VARCHAR(50) NOT NULL,
+    DeptID INT,
+    FOREIGN KEY (DeptID) REFERENCES Department(DeptID)
+);
+
+INSERT INTO Department VALUES (101,'CSE'),(102,'ECE'),(103,'IT');
+INSERT INTO Student VALUES
+(1,'Ravi',101),(2,'Priya',101),(3,'Sita',102),(4,'Meena',103);
+
+-- Join students with department names
+SELECT s.RollNo, s.Name, d.DeptName
+FROM Student s
+JOIN Department d ON s.DeptID = d.DeptID
+ORDER BY s.RollNo;
