@@ -1,0 +1,22 @@
+CREATE DATABASE HRDB;
+USE HRDB;
+
+CREATE TABLE Employees (
+    EmpID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    Dept VARCHAR(30),
+    DOJ DATE,
+    Salary INT
+);
+
+INSERT INTO Employees VALUES
+(1, 'Ravi Kumar', 'IT', '2024-06-01', 48000),
+(2, 'Priya Sharma', 'HR', '2023-01-15', 35000),
+(3, 'Rohit Mehta', 'IT', '2025-02-10', 52000),
+(4, 'Meena Das', 'Finance', '2022-11-30', 60000);
+
+CREATE INDEX idx_emp_name ON Employees(Name);
+
+SELECT * FROM Employees WHERE Name LIKE 'R%';
+UPDATE Employees SET Salary = Salary * 1.10 WHERE Dept = 'IT';
+SELECT * FROM Employees;
