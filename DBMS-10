@@ -1,0 +1,29 @@
+CREATE DATABASE CompanyWinDB;
+USE CompanyWinDB;
+
+CREATE TABLE Emp (
+    EmpID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    Dept VARCHAR(30),
+    Salary INT
+);
+
+INSERT INTO Emp VALUES
+(1, 'Asha', 'IT', 70000),
+(2, 'Bala', 'IT', 65000),
+(3, 'Chirag', 'HR', 50000),
+(4, 'Disha', 'HR', 52000),
+(5, 'Esha', 'Finance', 75000);
+
+SELECT EmpID, Name, Dept, Salary,
+       RANK() OVER (PARTITION BY Dept ORDER BY Salary DESC) AS SalaryRank
+FROM Emp
+ORDER BY Dept, SalaryRank;
+
+WITH TopEarners AS (
+  SELECT *, ROW_NUMBER() OVER (PARTITION BY Dept ORDER BY Salary DESC) AS rn
+  FROM Emp
+)
+SELECT EmpID, Name, Dept, Salary
+FROM TopEarners
+WHERE rn = 1;
