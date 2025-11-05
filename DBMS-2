@@ -1,0 +1,31 @@
+-- 1) Create DB + table + sample data
+DROP DATABASE IF EXISTS CollegeDB1;
+CREATE DATABASE CollegeDB1;
+USE CollegeDB1;
+
+CREATE TABLE Students (
+    StudentID INT PRIMARY KEY,
+    Name VARCHAR(50) NOT NULL,
+    Age INT CHECK (Age BETWEEN 17 AND 30),
+    Department VARCHAR(30) NOT NULL
+);
+
+INSERT INTO Students VALUES
+(1,'Ravi',20,'CSE'),
+(2,'Sita',19,'ECE'),
+(3,'Kiran',20,'CSE'),
+(4,'Meena',21,'IT'),
+(5,'Rohit',22,'ECE'),
+(6,'Priya',20,'CSE');
+
+-- 2) View all
+SELECT * FROM Students;
+
+-- 3) Total count
+SELECT COUNT(*) AS Total_Students FROM Students;
+
+-- 4) Dept-wise counts
+SELECT Department, COUNT(*) AS Number_of_Students
+FROM Students
+GROUP BY Department
+ORDER BY Number_of_Students DESC;
