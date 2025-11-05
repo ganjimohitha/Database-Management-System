@@ -1,0 +1,33 @@
+CREATE DATABASE ShopDB;
+USE ShopDB;
+
+CREATE TABLE Products (
+    Pid INT PRIMARY KEY,
+    Pname VARCHAR(30),
+    Price DECIMAL(10,2)
+);
+
+CREATE TABLE Sales (
+    Sid INT PRIMARY KEY,
+    Pid INT,
+    Qty INT,
+    FOREIGN KEY (Pid) REFERENCES Products(Pid)
+);
+
+INSERT INTO Products VALUES
+(1, 'Mouse', 500.00),
+(2, 'Keyboard', 800.00),
+(3, 'Headset', 1500.00);
+
+INSERT INTO Sales VALUES
+(10, 1, 50),
+(11, 2, 20),
+(12, 3, 10);
+
+CREATE VIEW ProductRevenue AS
+SELECT p.Pid, p.Pname, SUM(s.Qty)*p.Price AS Revenue
+FROM Products p
+JOIN Sales s ON p.Pid = s.Pid
+GROUP BY p.Pid, p.Pname;
+
+SELECT * FROM ProductRevenue ORDER BY Revenue DESC;
