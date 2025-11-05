@@ -1,0 +1,29 @@
+CREATE DATABASE BankDB;
+USE BankDB;
+
+CREATE TABLE Accounts (
+    AccNo INT PRIMARY KEY,
+    Holder VARCHAR(50)
+);
+
+CREATE TABLE Transactions (
+    TxnID INT PRIMARY KEY,
+    AccNo INT,
+    Type ENUM('CR','DR'),
+    Amount DECIMAL(10,2),
+    FOREIGN KEY (AccNo) REFERENCES Accounts(AccNo)
+);
+
+INSERT INTO Accounts VALUES (1001, 'Kiran'), (1002, 'Meena');
+INSERT INTO Transactions VALUES
+(1, 1001, 'CR', 1000.00),
+(2, 1001, 'DR', 200.00),
+(3, 1001, 'CR', 500.00),
+(4, 1002, 'CR', 2000.00),
+(5, 1002, 'DR', 150.00);
+
+SELECT a.AccNo, a.Holder,
+       SUM(CASE WHEN t.Type='CR' THEN t.Amount ELSE -t.Amount END) AS Balance
+FROM Accounts a
+JOIN Transactions t ON a.AccNo = t.AccNo
+GROUP BY a.AccNo, a.Holder;
