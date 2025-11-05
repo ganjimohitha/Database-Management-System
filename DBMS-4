@@ -1,0 +1,40 @@
+DROP DATABASE IF EXISTS LibraryDB;
+CREATE DATABASE LibraryDB;
+USE LibraryDB;
+
+CREATE TABLE Books(
+    BookID INT PRIMARY KEY,
+    Title VARCHAR(100) NOT NULL,
+    Author VARCHAR(60) NOT NULL
+);
+CREATE TABLE Members(
+    MemberID INT PRIMARY KEY,
+    Name VARCHAR(50) NOT NULL
+);
+CREATE TABLE Issues(
+    IssueID INT PRIMARY KEY,
+    MemberID INT,
+    BookID INT,
+    IssueDate DATE,
+    ReturnDate DATE NULL,
+    FOREIGN KEY (MemberID) REFERENCES Members(MemberID),
+    FOREIGN KEY (BookID) REFERENCES Books(BookID)
+);
+
+INSERT INTO Books VALUES
+(1,'DBMS Essentials','Navathe'),
+(2,'Operating Systems','Tanenbaum'),
+(3,'Computer Networks','Tanenbaum');
+INSERT INTO Members VALUES (10,'Kiran'),(11,'Rohit');
+INSERT INTO Issues VALUES
+(100,10,1,'2025-10-01','2025-10-10'),
+(101,11,2,'2025-10-05',NULL);
+
+-- All books with current status (LEFT JOIN)
+SELECT b.BookID, b.Title,
+       CASE WHEN i.ReturnDate IS NULL AND i.IssueID IS NOT NULL
+            THEN 'ISSUED' ELSE 'AVAILABLE' END AS Status
+FROM Books b
+LEFT JOIN Issues i
+  ON b.BookID = i.BookID
+  AND (i.ReturnDate IS NULL);   -- only consider open issues
