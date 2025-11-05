@@ -1,0 +1,17 @@
+CREATE DATABASE CompanyDB;
+USE CompanyDB;
+
+CREATE TABLE Employees (
+    EmpID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    Department VARCHAR(30),
+    Salary INT
+);
+
+INSERT INTO Employees VALUES (1, 'Ravi', 'HR', 25000);
+INSERT INTO Employees VALUES (2, 'Sita', 'IT', 40000);
+INSERT INTO Employees VALUES (3, 'Kiran', 'Sales', 30000);
+INSERT INTO Employees VALUES (4, 'Priya', 'IT', 45000);
+INSERT INTO Employees VALUES (5, 'Meena', 'Finance', 35000);
+
+SELECT * FROM Employees;
